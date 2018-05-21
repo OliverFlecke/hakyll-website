@@ -1,3 +1,6 @@
 .stack-work/
 _cache/
 _site/
+
+# Script to publish lastest content
+publish.sh
