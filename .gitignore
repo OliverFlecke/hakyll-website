@@ -1,3 +1,6 @@
 .stack-work/
 _cache/
 _site/
+
+# Ignore the publish script
+publish.sh
