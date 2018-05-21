@@ -1,0 +1,221 @@
+\chapter{Hashing}
+
+    \section{Dictionaries}
+        \textbf{The Dictionary Problem}: Maintain a dynamic set of integers $S \subseteq U$, which support the following operations.
+
+        \begin{itemize}
+            \item \textsc{Lookup}(x): return true if $x \in S$ and false otherwise
+            \item \textsc{Insert}(x): update set to be $S' = S \cup \{x\}$
+            \item \textsc{Delete}(x): update set to be $S' = S \setminus \{x\}$
+        \end{itemize}
+
+        $U$ is the universe, where $|U|$ is the size of the universe.
+        Note that \emph{map} and dictionary is two different terms for the same thing, where map is the more correct mathematical term, but can mean different things in computer science.
+
+    \section{Chained Hashing}
+        Use a \emph{hash function}, which is some (random) function $h$ that maps $U$ to $\{0, \ldots, m-1\}$, where $m = \Omega(n)$.
+        Initialize an array $A[0, \ldots, m-1]$, where $A[i]$ stores a linked list containing the keys in $S$ with $h(x) = i$.
+
+        Operations:
+        \begin{itemize}
+            \item \textsc{Lookup}(x): Compute $h(x)$, scan through list for $h(x)$, and return true if $x$ is in the list and false otherwise.
+            \item \textsc{Insert}(x): Compute $h(x)$, scan through list of $h(x)$. If $x$ is in the list, do nothing, otherwise add $x$ to the front of the list.
+            \item \textsc{Delete}(x): Compute $h(x)$, scan through the list for $h(x)$. If $x$ is in the list then remove it else do nothing.
+        \end{itemize}
+
+        The time complexity of this solution is $O(1 + \text{length of linked list for h(x)})$ (space is still linear, which is the best we can hope for).
+
+        To prove the complexity, we use the following three assumptions.
+        \begin{enumerate}[label=\Roman*]
+            \item h is chosen uniformly at random among all functions from $U$ to $\{0, \ldots, m-1\}$.
+            \item We can store h in $O(n)$ space
+            \item We can evaluate h in $O(1)$ time
+        \end{enumerate}
+        Now we can compute the expected length of the linked list:
+        \begin{align*}
+            E(\text{length of linked list for} h(x)) &= E(|\{y \in S \mid h(y) = h(x)\}|) \\
+            &= E\left(\sum_{y \in S}
+                \begin{cases}
+                    1 \quad \text{if } h(y) = h(x) \\
+                    0 \quad \text{if } h(y) \not = h(x)
+                \end{cases}
+                \right) \\
+            &= \sum_{y \in S} E\left(
+                \begin{cases}
+                    1 \quad \text{if } h(y) = h(x) \\
+                    0 \quad \text{if } h(y) \not = h(x)
+                \end{cases}
+                \right) \\
+            &= \sum_{y \in S} Pr(h(x) = h(y)) \\
+            &= 1 + \sum_{y \in S \setminus \{x\}} Pr(h(x) = h(y)) \\
+            &= 1 + \sum_{y \in S \setminus \{x\}} \frac{1}{m} \\
+            &= 1 + (n - 1) \frac{1}{m} = O(1)
+        \end{align*}
+
+        Note that the only place we use that $h$ has to be random is at the fifth line in the equations above. However, the requirement for the hash function $h$ is much weaker than being a random function! We only require that $\forall (x, y), x \not = y, Pr(h(x) = h(y)) \leq \frac{1}{m}$. Hence we can actually find usable functions!
+
+    \section{Universal Hashing}
+
+        Universal hash functions are a family of hash function with a very low probability of collisions between elements in the universe.
+
+        \begin{definition}[Universal Hashing]
+        Let $H$ be a family of functions mapping $U \rightarrow \{0, \ldots, m-1\}$, then we say that $H$ is \emph{universal} if $\forall (x \in U, y \in U), x \not = y$ and the function $h$ is chosen uniformly at random from $H$,
+            \[ Pr(h(x) = h(y)) \leq \frac{1}{m} \]
+        \end{definition}
+
+        To create such a hash function, \emph{positional number systems} can be used. The is for integers $x$ and $p$, the \emph{base-p representation} of $x$ is $x$ written in base $p$, $x_p$. Example: $10_{10} = 1010_2 = 1 \cdot 2^3 + 0 \cdot 2^2 + 1 \cdot 2^1 + 0 \cdot 2^0$.
+
+        The hash function can now be defined as the following:
+
+        \begin{definition}[Base-p hash function]
+            Given a prime $m < p < 2m$ and $a = (a_1 a_2 \ldots a_r)_p$ define:\footnote{$\mod m$ should also be applied to ensure that the mapping is to the correct range.}
+            \[ h_a(x = x_1 x_2 \ldots x_r) = a_1 x_1 + a_2 x_2 + \cdots + a_r x_r \mod p \]
+        \end{definition}
+
+        The family of universal functions can then be defined as
+        \[ H = \{ h_a \mid a = (a_1 a_2 \ldots a_r)_p \in \{0, \ldots, p-1\}^r\} \]
+        To choose a random $h$ simply means to choose a random $a$.
+
+        These function should respect $O(1)$ space and time evaluation for any $h \in H$.
+        To show this, a few things are needed.
+
+        \begin{lemma}[Modular multiplicative inverse]
+            Let $p$ be some prime.
+            For any $a \in \{1, \ldots, p - 1\}$ there exists a unique inverse $a^{-1}$ such that $a^{-1} \cdot a \equiv 1 \mod p$ ($Z_p$ is also known as a field.)
+        \end{lemma}
+
+        Now the goal is to show, that for a random $a = (a_1 a_2 \ldots a_r)_p$, if $x = (x_1 x_2 \ldots x_r)_p \not = y = (y_1 y_2 \ldots y_r)_p$ then $Pr(h_a(x) = h_a(y)) \leq \frac{1}{m}$.
+        \begin{align*}
+            Pr(h_a((x_1 &\ldots x_r)_p = h_a((y_1 \ldots y_r)_p)) \\
+            &= Pr(a_1 x_1 + \ldots + a_r x_r \equiv a_1 y_1 + \ldots + a_r y_r \mod p) \\
+            &= Pr(a_r x_r - a_r y_r \equiv a_1 y_1 - a_1 x_1 + \ldots + a_{r-1} y_{r - 1} - a_{r-1} x_{r-1} \mod p) \\
+            &= Pr(a_r (x_r - y_r) \equiv a_1 (y_1 - x_1) + \ldots + a_{r-1} (y_{r-1} - x_{r-1}) \mod p) \\
+            &= Pr(a_r (x_r - y_r)(x_r - y_r)^{-1} \equiv \\
+            & \quad \quad \quad (a_1(y_1 - x_1) + \ldots + a_{r-1}(y_{r-1} - x_{r-1}))(x_r - y_r)^{-1} \mod p) \\
+            &= Pr(a_r \equiv (a_1 (y_1 - x_1) + \ldots + a_{r-1}(y_{r-1} - x_{r-1}))(x_r - y_r)^{-1} \mod p) \\
+            &= \frac{1}{p} \leq \frac{1}{m}
+        \end{align*}
+
+        The last rewrite is possible, because it has simplified down to whether $a_r$ collide with some number in the range. As there is $p^r$ choices for $a$, exactly $p^{p-1}$ causes a collision, which gives the probability of $\frac{p^{r-1}}{p^r} = \frac{1}{p}$.
+
+        \begin{theorem}
+            The dictionary problem can be solved without any special assumptions in $O(n)$ space and $O(1)$ \emph{expected} time per operation (\textsc{Lookup}, \textsc{Insert}, and \textsc{Delete}).
+        \end{theorem}
+
+        \subsection{Other universal families}
+
+            There also exists other types of universal families. For example:
+
+            \begin{definition}
+                For prime $p > 0$, $a \in \{1, \ldots, p-1\}$, $b \in \{0, \ldots, p-1\}$
+                \[ h_{a,b}(x) = (ax + b \mod p) \mod m \]
+                \[ H = \{ h_{a, b} \mid a \in \{1, \ldots, p-1\}, b \in \{0, \ldots, p-1\}\} \]
+            \end{definition}
+
+            Hash function from $k$-bit numbers to $i$-bit numbers. $a$ is an odd $k$-bit integer.
+
+            \begin{definition}
+                \[ h_a(x) = (ax \mod 2^k) >> (k - i) \]
+                \[ H = \{h_a \mid a \text{ is an odd integer in } \{1, \ldots, 2^k - 1\}\} \]
+            \end{definition}
+
+    \section{Static Dictionaries and Perfect Hashing}
+
+        \begin{definition}[Static Dictionary Problem]
+            Given a set $S \subseteq U = \{0, \ldots, u-1\}$ of size $n$ for preprocessing, which supports the following operation:
+            \begin{itemize}
+                \item \textsc{Lookup}(x): return true if $x \in S$ and false otherwise
+            \end{itemize}
+        \end{definition}
+
+        The static problem does not support any update operations (\textsc{Insert} or \textsc{Delete}), and thus need the set to be given in advance.
+
+        Using a dynamic solution, chained hashing can be used, making $n$ insertions when creating the set, which will then take $O(n)$ space and $O(1)$ expected time per lookup.
+
+        \subsection{Perfect Hashing}
+
+            A \emph{perfect hash function} for $S$ is a \emph{collision free} hash function on $S$. This means that the lookup time will be $O(1)$ in \emph{worst-case}.
+
+            To find such a solution, we look at two different solutions that solves different parts of the problem, and which can afterwards be combined to solve the full problem.
+
+            \paragraph{Solution 1}
+
+                Collision-free but with too much space usage.
+                Instead of mapping into an array of size $n$, instead use a universal hash function mapping to an array of size $n^2$.
+                Now the expected number of total collisions in the array will be:
+                \begin{align*}
+                    E(\#collisions)
+                    &= E\left( \sum_{x,y \in S, x \not = y}
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &= \sum_{x,y \in S, x \not = y} E\left(
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &= \sum_{x, y \in S, x \not = y} Pr(h(x) = h(y)) = \binom{n}{2} \frac{1}{n^2} \leq \frac{n^2}{2} \cdot \frac{1}{n^2} = \frac{1}{2}
+                \end{align*}
+
+                where $\binom{n}{2}$ is the number of distinct pairs, and the $\frac{1}{n^2}$ is the chance of one element colliding with another, and since we are mapping into an array of size $n^2$, only if they map to the same index will they collide.
+
+                This means that with probability $1/2$ we get a perfect hash function, which means that if it is not perfect, we can just try again and create a new one.
+                The expected number of trials before we get a perfect hash function is $O(1)$.
+                With this, we can support $O(1)$ worst-case time lookup using $O(n^2)$ space.
+
+            \paragraph{Solution 2}
+
+                Many collisions but using linear space.
+                If we use the same solution as before, but map into an array of size $n$ instead, then the expected number of collisions will be:
+                \begin{align*}
+                    E(\#collisions)
+                    &= E\left( \sum_{x,y \in S, x \not = y}
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &= \sum_{x,y \in S, x \not = y} E \left(
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &= \sum_{x,y \in S, x \not = y} Pr(h(x) = h(y)) = \binom{n}{2} \frac{1}{n} \leq \frac{n^2}{2} \cdot \frac{1}{n} = \frac{n}{2}
+                \end{align*}
+
+                With this solution, we can see that we get a linear number of collisions, and hence not constant time lookup in worst-case.
+
+            \paragraph{Solution 3 - The FKS scheme}
+
+                Combine the two previous solution to make a two-level solution.
+                At level 1, use the solution with lots of collisions and linear space.
+                Resolve each collisions at level 1 with collision-free solution at level 2.
+                Hence we create a table $S$ of size $n$ which each contains a chained hashing table $S_i$, which size is the number of collisions at index $i$ at the first level squared.
+
+                \textsc{Lookup} will now work by doing a lookup in level 1 to find the correct level 2 dictionary, then lookup in the level 2 to find the element.
+                Doing two constant time operations will still take constant time, hence the overall lookup operation still takes constant time.
+
+                Level 1 will then use $O(n)$ space, while level 2 will use quadratic space in the number of elements that collide on the first level.
+                We can compute the total size needed for this data structure:
+                \begin{align*}
+                    space
+                    &= O\left( n + \sum_i |S_i|^2 \right) \\
+                    &= O\left( n + \sum_i \left( |S_i| + 2 \binom{|S_i|}{2}\right)\right) \\
+                    &= O\left( n + \sum_i |S_i| + 2 \sum \binom{|S_i|}{2}\right) \\
+                    &= O\left( n + n + 2n \right) = O(n)
+                \end{align*}
+
+                This method can do worst-case constant time lookups in static dictionaries, using $O(n)$ space and expected preprocessing time.
+                This is also known as the \emph{FKS scheme}.
+
+                \begin{theorem}
+                    We can solve the static dictionary problem for a set $S$ of size $n$ in:
+                    \begin{itemize}
+                        \item $O(n)$ space and expected preprocessing time
+                        \item $O(1)$ worst-case time per lookup operation
+                    \end{itemize}
+                \end{theorem}
