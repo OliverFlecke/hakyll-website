@@ -1,10 +1,9 @@
 ---
-title: Hashing
-date: 2018-04-01
+title: Dictionaries and Hashing
+date: 2018-05-21
 author: Oliver Fleckenstein
 ---
-
-\chapter{Hashing}
+\chapter{Dictionaries and Hashing}
 
     \section{Dictionaries}
         \textbf{The Dictionary Problem}: Maintain a dynamic set of integers $S \subseteq U$, which support the following operations.
@@ -39,7 +38,7 @@ author: Oliver Fleckenstein
         \end{enumerate}
         Now we can compute the expected length of the linked list:
         \begin{align*}
-            E(\text{length of linked list for} h(x)) &= E(|\{y \in S \mid h(y) = h(x)\}|) \\
+            E(\text{length of linked list for } h(x)) &= E(|\{y \in S \mid h(y) = h(x)\}|) \\
             &= E\left(\sum_{y \in S}
                 \begin{cases}
                     1 \quad \text{if } h(y) = h(x) \\
