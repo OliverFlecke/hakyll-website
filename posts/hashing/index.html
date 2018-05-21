@@ -4,9 +4,10 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Hashing</title>
+        <title>Dictionaries and Hashing</title>
         <link rel="stylesheet" href="../../css/main.css" />
         <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
     </head>
     <body>
         <header>
@@ -21,18 +22,18 @@
         </header>
 
         <main role="main" class="main">
-            <h1>Hashing</h1>
+            <!-- <h1>Dictionaries and Hashing</h1> -->
             <article>
     <section class="header">
         
-            Posted on April  1, 2018
+            Posted on May 21, 2018
         
         
             by Oliver Fleckenstein
         
     </section>
     <section>
-        <h1 id="hashing">Hashing</h1>
+        <h1 id="dictionaries-and-hashing">Dictionaries and Hashing</h1>
 <h2 id="dictionaries">Dictionaries</h2>
 <p><strong>The Dictionary Problem</strong>: Maintain a dynamic set of integers <span class="math inline"><em>S</em> ⊆ <em>U</em></span>, which support the following operations.</p>
 <ul>
@@ -57,7 +58,7 @@
 <li><p>We can evaluate h in <span class="math inline"><em>O</em>(1)</span> time</p></li>
 </ol>
 <p>Now we can compute the expected length of the linked list: <br /><span class="math display">$$\begin{aligned}
-            E(\text{length of linked list for} h(x)) &amp;= E(|\{y \in S \mid h(y) = h(x)\}|) \\
+            E(\text{length of linked list for } h(x)) &amp;= E(|\{y \in S \mid h(y) = h(x)\}|) \\
             &amp;= E\left(\sum_{y \in S}
                 \begin{cases}
                     1 \quad \text{if } h(y) = h(x) \\
