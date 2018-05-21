@@ -45,11 +45,11 @@ main = hakyll $ do
     --                 constField "title" "Archives"            `mappend`
     --                 defaultContext
 
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/main.html" archiveCtx
-                >>= relativizeUrls
-                >>= cleanIndexUrls
+            -- makeItem ""
+            --     >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
+            --     >>= loadAndApplyTemplate "templates/main.html" archiveCtx
+            --     >>= relativizeUrls
+            --     >>= cleanIndexUrls
 
 
     match "index.html" $ do
