@@ -1,4 +1,5 @@
 git checkout develop
+git stash
 
 # Clean and build the site
 stack build

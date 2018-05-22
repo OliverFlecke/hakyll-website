@@ -1,0 +1,21 @@
+\documentclass[preview]{standalone}
+\usepackage{flecken}
+\begin{document}
+
+\begin{algorithmic}[0]
+    \Function{BinarySearch}{int[] $A$, int $x$}
+        \If{$\textsc{Length}(A)$ = 0}
+            \Return False
+        \EndIf
+        \State $i \gets \frac{\textsc{Length}(A)}{2}$
+        \If{$A[i] = x$}
+            \Return True
+        \ElsIf{$A[i] > x$}
+            \Return \Call{BinarySearch}{$A[0, i]$, $x$}
+        \ElsIf{$A[i] < x$}
+            \Return \Call{BinarySearch}{$A[i, \textsc{Length}(A)]$, $x$}
+        \EndIf
+    \EndFunction
+\end{algorithmic}
+
+\end{document}

@@ -1,0 +1,16 @@
+\documentclass[preview]{standalone}
+\usepackage{flecken}
+\begin{document}
+
+\begin{algorithmic}[0]
+    \Function{LinearSearch}{int[] $A$, int $x$}
+        \For{$i = 0$ to \textsc{length($A$)}}
+            \If{$A[i] = x$}
+                \State \Return True
+            \EndIf
+        \EndFor
+        \State \Return False
+    \EndFunction
+  \end{algorithmic}
+
+\end{document}

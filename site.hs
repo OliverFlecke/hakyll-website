@@ -8,7 +8,10 @@ import Data.List (sortBy, isSuffixOf)
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    match "images/*" $ do
+    match "images/*.png" $ do
+        route   idRoute
+        compile copyFileCompiler
+    match "images/*.gif" $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -36,22 +39,6 @@ main = hakyll $ do
             >>= relativizeUrls
             >>= cleanIndexUrls
 
-    -- create ["archive.html"] $ do
-    --     route cleanRoute
-    --     compile $ do
-    --         posts <- recentFirst =<< loadAll "posts/*"
-    --         let archiveCtx =
-    --                 listField "posts" postCtx (return posts) `mappend`
-    --                 constField "title" "Archives"            `mappend`
-    --                 defaultContext
-
-            -- makeItem ""
-            --     >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-            --     >>= loadAndApplyTemplate "templates/main.html" archiveCtx
-            --     >>= relativizeUrls
-            --     >>= cleanIndexUrls
-
-
     match "index.html" $ do
         route idRoute
         compile $ do
@@ -75,7 +62,6 @@ postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
     defaultContext
-
 
 -- Functions to clean the routes
 cleanRoute :: Routes
