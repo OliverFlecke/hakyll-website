@@ -1,3 +1,9 @@
+if [ $# -eq 0 ]
+  then
+    echo "No publish message supplied"
+    exit 1
+fi
+
 git checkout develop
 git stash
 
@@ -13,7 +19,7 @@ cp -a _site/* .
 
 # Commit and publish
 git add --all
-git commit -m 'Publish'
+git commit -m $1
 git push
 
 # Checkout devolopment branch afterwards
