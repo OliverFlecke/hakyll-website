@@ -8,12 +8,8 @@ import Data.List (sortBy, isSuffixOf)
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    match "images/*.png" $ do
-        route   idRoute
-        compile copyFileCompiler
-    match "images/*.gif" $ do
-        route   idRoute
-        compile copyFileCompiler
+    copyFiles "images/**.png"
+    copyFiles "images/**.gif"
 
     match "css/*" $ do
         route   idRoute
@@ -56,6 +52,11 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateBodyCompiler
 
+copyFiles :: Pattern -> Rules ()
+copyFiles pattern =
+    match pattern $ do
+        route   idRoute
+        compile copyFileCompiler
 
 --------------------------------------------------------------------------------
 postCtx :: Context String

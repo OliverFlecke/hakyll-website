@@ -7,7 +7,7 @@ author: Oliver Fleckenstein
 
     Searching for elements in a data structure is one of the fundamental problems for every computer scientist and programmer will encounter many times.
     Given an array $A$ of integers, consider the problem of determine if a certain number $x$ apprears in the array or not.
-    Here is an illustration, where the first line is the indexes into the array.
+    Below is an illustration, where the first line is the indexes into the array and the second line is the value at the given index.
     Consider how to determine if $41$ is the array or not.
 
     \begin{figure}[!h]
@@ -16,7 +16,7 @@ author: Oliver Fleckenstein
     \end{figure}
 
     A naive approach to this problem is to do a \emph{linear search}.
-    That is to go through each of the elements one by one, checking if they are equal to $x$.
+    That is to go through each of the elements one by one, comparing each of the elements if they are equal to $x$.
     Pseudocode for this simple algorithm can be seen here:
 
     \begin{figure}[!h]
@@ -24,8 +24,9 @@ author: Oliver Fleckenstein
         \includegraphics{/images/algorithm_linear_search.png}
     \end{figure}
 
-    It is easy to see that this approach will use linear time, $O(n)$ where $n$ is the number of elements in the array, as in worst case the element is last in the array or not in the array at all.
-    This means the algorithm will look exactly once at every element in the array.
+    It is easy to see that this approach will use linear time, denoted $O(n)$ where $n$ is the number of elements in the array.
+    By analyzing the worst case where the element is last in the array or not in the array at all, we can see that the algorithm will look exactly once at every element in the array.
+    Comparing each element to $x$ can be done in constant time.
 
     There must be a better way to search through an array.
     First of all, is there a way we can terminate the algorithm early?
