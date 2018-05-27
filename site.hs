@@ -20,7 +20,7 @@ main = hakyll $ do
         compile $ do
             getResourceBody
 
-    match (fromList ["about.md", "contact.md"]) $ do
+    match "about.md" $ do
         route   $ cleanRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/main.html" defaultContext
