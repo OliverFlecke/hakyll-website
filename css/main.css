@@ -8,167 +8,158 @@
 */
 
 body {
-  font-size: 1.6rem;
-  font-family: 'EB Garamond', sans-serif;
-  color: #B7B7B6;
-  background: #141311;
-  padding: 0;
-  margin: 0;
+    font-size: 1.6rem;
+    font-family: 'EB Garamond', sans-serif;
+    color: #B7B7B6;
+    background: #141311;
+    padding: 0;
+    margin: 0;
 }
 
 a:link {
-  color: #00CCCC;
+    color: #00CCCC;
 }
 a:visited {
-  color: #008B8B;
+    color: #008B8B;
 }
 
 img {
-  width: 100%;
+    width: 100%;
 }
 
 p {
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
 }
 
 header {
-  border-bottom: 0.2rem solid #999999;
-  background-color: #062F4F;
+    border-bottom: 0.2rem solid #999999;
+    background-color: #062F4F;
 }
 
 header a {
-  color: #B7B7B6 !important;
+    color: #B7B7B6 !important;
 }
 
 nav {
-  text-align: right;
+    text-align: right;
 }
 
 nav a {
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-decoration: none;
-  text-transform: capitalize;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: capitalize;
 }
 
 h1 {
-  margin: 1rem auto auto;
-  font-size: 3rem;
+    margin: 1rem auto auto;
+    font-size: 3rem;
 }
 
 h2 {
-  font-size: 2rem;
+    font-size: 2rem;
 }
 
 main {
-  width: 90%;
-  max-width: 50rem;
-  padding: 0px 5%;
+    width: 90%;
+    max-width: 50rem;
+    padding: 0px 5%;
 }
 
 article .header {
-  font-size: 1.4rem;
-  font-style: italic;
-  color: #555;
-  margin: 1rem 0;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #555;
+    margin: 1rem 0;
 }
 
 .title a {
-  font-weight: bold;
-  color: #cccccc;
-  text-decoration: none;
+    font-weight: bold;
+    color: #cccccc;
+    text-decoration: none;
 }
 
 
 @media (max-width: 320px) {
-  .nav-container {
-    width: 90%;
-    padding: 0 5%;
-  }
-
-  header {
-    /* margin: 4.2rem 0; */
-  }
-  nav {
-    margin: 0 auto 1rem;
-    text-align: center;
-  }
-  .title {
-    text-align: center;
-    margin: 0 auto 1rem;
-  }
-  .title a {
-    font-size: 2rem;
-  }
-  nav a {
-    display: block;
-    line-height: 1.6;
-  }
+    .nav-container {
+        width: 90%;
+        padding: 0 5%;
+    }
+    nav {
+        margin: 0 auto 1rem;
+        text-align: center;
+    }
+    .title {
+        text-align: center;
+        margin: 0 auto 1rem;
+    }
+    .title a {
+        font-size: 2rem;
+    }
+    nav a {
+        display: block;
+        line-height: 1.6;
+    }
 }
 
 @media (min-width: 320px) {
-  .nav-container {
-    width: 90%;
-    padding: 0 5%;
-  }
-  header {
-    /* margin: 4.2rem 0; */
-    margin: 0;
-  }
-  nav {
-    margin: 0 auto 1rem;
-    text-align: center;
-  }
-  .title {
-    text-align: center;
-    margin: 0 auto 1rem;
-  }
-  .title a {
-    font-size: 2.2rem;
-  }
-  nav a {
-    display: inline;
-    margin: 0 0.6rem;
-  }
+    .nav-container {
+        width: 90%;
+        padding: 0 5%;
+    }
+    header {
+        margin: 0;
+    }
+    nav {
+        margin: 0 auto 1rem;
+        text-align: center;
+    }
+    .title {
+        text-align: center;
+        margin: 0 auto 1rem;
+    }
+    .title a {
+        font-size: 2.2rem;
+    }
+    nav a {
+        display: inline;
+        margin: 0 0.6rem;
+    }
 }
 
 @media (min-width: 640px) {
-  main {
-    max-width: 50rem;
-    margin: 0 auto;
-    padding: 0;
-  }
+    main {
+        max-width: 50rem;
+        margin: 0 auto;
+        padding: 0;
+    }
 
-  header {
-    /* background-color: #4717F6; */
-    background-color: #062F4F;
-    margin: 0;
-    padding: 1.2rem 0;
-  }
+    header {
+        background-color: #062F4F;
+        margin: 0;
+        padding: 1.2rem 0;
+    }
 
-  .nav-container {
-    max-width: 50rem;
-    margin: 0 auto;
-    /* padding: 0 0 3rem; */
-    /* padding: 1.2rem 0; */
-  }
+    .nav-container {
+        max-width: 50rem;
+        margin: 0 auto;
+    }
 
-  nav {
-    margin: 0;
-    text-align: right;
-  }
-  nav a {
-    /* margin: 0 0 0 1.2rem; */
-    display: inline;
-  }
-  .title {
-    margin: 0;
-    text-align: left;
-  }
-  .title a {
-    float: left;
-    font-size: 2rem;
-  }
+    nav {
+        margin: 0;
+        text-align: right;
+    }
+    nav a {
+        display: inline;
+    }
+    .title {
+        margin: 0;
+        text-align: left;
+    }
+    .title a {
+        float: left;
+        font-size: 2rem;
+    }
 }

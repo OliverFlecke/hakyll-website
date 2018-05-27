@@ -5,13 +5,16 @@ function Clean-Images () {
         Remove-Item
 }
 
-function Generate-Images () {
+function Generate-Images (
+    [String]$Path="./images",
+    [Switch]$RefreshImages
+) {
     $From = $PWD.Path
-    Get-ChildItem -Path ./images -Filter *.tex -Recurse |
+    Get-ChildItem -Path $Path -Filter *.tex -Recurse |
     ForEach-Object {
         $RelativeName = ($_.FullName.Replace($From, "") -replace "\\","/").Substring(1)
         Write-Host "Converting $($RelativeName)"
-        & Create-Image -Name $_.FullName
+        & Create-Image -Name $_.FullName -RefreshImage:$RefreshImages
         Write-Host ""
     }
     Remove-Item *.log
@@ -19,7 +22,10 @@ function Generate-Images () {
 
 function Create-Image (
     [Parameter(Mandatory=$true)]
-    [String]$Name
+    [String]$Name,
+    [String]$Number="",
+    [Switch]$OutputLaTeX,
+    [Switch]$RefreshImage
 )
 {
     $From = "$($PWD.Path)"
@@ -28,13 +34,26 @@ function Create-Image (
     $BaseName = [io.path]::GetFileNameWithoutExtension($Name)
     $Path = (Split-Path $FullName).Substring(1) -replace "\\","/"
 
+    if ((Test-Path "$($Path)\\$($BaseName).png") -And (-not $RefreshImage)) {
+        Write-Host "Image $($BaseName).png already exists, skipping"
+        return
+    }
+    else {
+        Write-Host "Creating image"
+    }
+
     if ($Path -eq "") {
         $Path = "."
     }
 
     $RelativeName = "$($Path)/$($BaseName)"
-    & pdflatex -halt-on-error -output-directory="$($Path)" "$($RelativeName).tex" | Out-Null
-    bash ./scripts/convert_pdf_to_image.sh "$($RelativeName).pdf"
+    if ($OutputLaTeX) {
+        & pdflatex -halt-on-error -output-directory="$($Path)" "$($RelativeName).tex"
+    }
+    else {
+        & pdflatex -halt-on-error -output-directory="$($Path)" "$($RelativeName).tex" | Out-Null
+    }
+    bash ./scripts/convert_pdf_to_image.sh "$($RelativeName).pdf" $Number
     Remove-Item "$($RelativeName).*" -Exclude *.tex,*.png,*.gif -Force
 
     Remove-Item *.log

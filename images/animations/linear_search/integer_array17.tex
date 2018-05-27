@@ -1,0 +1,33 @@
+\documentclass{standalone}
+\usepackage{flecken}
+\begin{document}
+
+\newcounter{counter}
+\newcounter{x}
+\setcounter{x}{8}
+\begin{tabularx}{\textwidth}{*{15}{C}}
+    \forloop{counter}{0}{\value{counter} < \value{x}}{&} \textcolor{black}{$\downarrow$} \\
+    \forloop{counter}{0}{\value{counter} < 14}{\centering\number\value{counter} &}14
+    \\ \hline
+    \ccol{31} &
+    \ccol{4} &
+    \ccol{13} &
+    \ccol{34} &
+    \ccol{3} &
+    \ccol{27} &
+    \ccol{74} &
+    \ccol{9} &
+    \ccol{18} &
+    \ccol{16} &
+    \ccol{41} &
+    \ccol{67} &
+    \ccol{1} &
+    \ccol{53} &
+    \ccol{22}
+    \\ \hline
+    \forloop{counter}{1}{\value{counter} < \value{x}}{&}
+    &
+    \multicolumn{2}{l}{\textcolor{black}{$= x$}}
+\end{tabularx}
+
+\end{document}

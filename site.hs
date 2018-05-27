@@ -8,7 +8,7 @@ import Data.List (sortBy, isSuffixOf)
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    copyFiles "images/**.png"
+    copyFiles ("images/**.png" .&&. complement "images/animations/**.png")
     copyFiles "images/**.gif"
 
     match "css/*" $ do
