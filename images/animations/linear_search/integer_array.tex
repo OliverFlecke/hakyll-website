@@ -6,11 +6,11 @@
 \newcounter{x}
 \setcounter{x}{columnindex}
 \begin{tabularx}{\textwidth}{*{15}{C}}
-    \forloop{counter}{0}{\value{counter} < \value{x}}{&} \textcolor{embersComp}{$\downarrow$} \\
+    \forloop{counter}{0}{\value{counter} < \value{x}}{&} \textcolor{black}{$\downarrow$} \\
     \forloop{counter}{0}{\value{counter} < 14}{\centering\number\value{counter} &}14
     \\ \hline
     \ccol{31} &
-    \ccol{4} &
+    \ccol{62} &
     \ccol{13} &
     \ccol{34} &
     \ccol{3} &
@@ -27,7 +27,7 @@
     \\ \hline
     \forloop{counter}{1}{\value{counter} < \value{x}}{&}
     &
-    \multicolumn{2}{l}{\textcolor{embersComp}{$\not= x$}}
+    \multicolumn{2}{l}{\textcolor{black}{$= x$}}
 \end{tabularx}
 
 \end{document}

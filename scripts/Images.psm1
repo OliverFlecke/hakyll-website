@@ -62,8 +62,6 @@ function Create-Image (
     }
     bash ./scripts/convert_pdf_to_image.sh "$($RelativeName).pdf" $Number
     Remove-Item "$($RelativeName).*" -Exclude *.tex,*.png,*.gif -Force
-
-    Remove-Item *.log
 }
 
 Export-ModuleMember -Function *
