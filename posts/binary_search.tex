@@ -3,7 +3,7 @@ title: Binary Search
 date: 2018-05-22
 author: Oliver Fleckenstein
 ---
-\section{Searching Strategies}
+\chapter{Searching Strategies}
 
     Searching for elements in a data structure is one of the fundamental problems for every computer scientist and programmer will encounter many times.
     Given an array $A$ of integers, consider the problem of determine if a certain number $x$ apprears in the array or not.
@@ -41,7 +41,7 @@ author: Oliver Fleckenstein
     When looking for $20$ in the sorted array, it is clear that the element cannot be at any index after $22$, hence we can terminate the algorithm early.
     However, asymptotically, this will not give a better running time, as the element you are looking for could be larger than any element in the array, causing each element to be analyzed.
 
-    \subsection{A better approach - Binary Search}
+    \section{A better approach - Binary Search}
 
         Reusing the idea of sorting the array, a better algorithm can be devised using \emph{binary search} or \emph{logarithmic search}.
         Instead of starting from one end of the array, start at the middle of the sorted array and check if the element is equal, smaller, or larger than that element.
