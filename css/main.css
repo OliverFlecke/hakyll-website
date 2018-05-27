@@ -1,7 +1,15 @@
+/* Colors
+* Dark Background: #141311;
+* Light grey: #B7B7B6
+* Dark grey: #686766;
+* Dark-blue (ink): #062F4F;
+* Pink (posy): #813772
+* Red (Embers): #B82601
+*/
+
 body {
   font-size: 1.6rem;
   font-family: 'EB Garamond', sans-serif;
-  /* color: #686766; */
   color: #B7B7B6;
   background: #141311;
   padding: 0;
@@ -17,6 +25,12 @@ a:visited {
 
 img {
   width: 100%;
+}
+
+p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 header {
@@ -58,6 +72,7 @@ article .header {
   font-size: 1.4rem;
   font-style: italic;
   color: #555;
+  margin: 1rem 0;
 }
 
 .title a {
