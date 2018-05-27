@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dictionaries and Hashing</title>
+        <link rel="stylesheet" href="../../css/main.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+        <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <div class="nav-container">
+                <h1 class="title">
+                    <a href="../../">Oliver Fleckenstein</a>
+                </h1>
+                <nav>
+                    <a href="../../about/">About</a>
+                </nav>
+            </div>
+        </header>
+
+        <main role="main" class="main">
+            <link rel="stylesheet" href="../../css/numbering.css" />
+<article>
+    <section class="header">
+        
+            Posted on May 21, 2018
+        
+        
+            by Oliver Fleckenstein
+        
+    </section>
+    <section>
+        <h1 id="dictionaries-and-hashing">Dictionaries and Hashing</h1>
+<h2 id="dictionaries">Dictionaries</h2>
+<p><strong>The Dictionary Problem</strong>: Maintain a dynamic set of integers <span class="math inline"><em>S</em> ⊆ <em>U</em></span>, which support the following operations.</p>
+<ul>
+<li><p><span class="smallcaps">Lookup</span>(x): return true if <span class="math inline"><em>x</em> ∈ <em>S</em></span> and false otherwise</p></li>
+<li><p><span class="smallcaps">Insert</span>(x): update set to be <span class="math inline"><em>S</em>′ = <em>S</em> ∪ {<em>x</em>}</span></p></li>
+<li><p><span class="smallcaps">Delete</span>(x): update set to be <span class="math inline"><em>S</em>′ = <em>S</em> \ {<em>x</em>}</span></p></li>
+</ul>
+<p><span class="math inline"><em>U</em></span> is the universe, where <span class="math inline">|<em>U</em>|</span> is the size of the universe. Note that <em>map</em> and dictionary is two different terms for the same thing, where map is the more correct mathematical term, but can mean different things in computer science.</p>
+<h2 id="chained-hashing">Chained Hashing</h2>
+<p>Use a <em>hash function</em>, which is some (random) function <span class="math inline"><em>h</em></span> that maps <span class="math inline"><em>U</em></span> to <span class="math inline">{0, …, <em>m</em> − 1}</span>, where <span class="math inline"><em>m</em> = <em>Ω</em>(<em>n</em>)</span>. Initialize an array <span class="math inline"><em>A</em>[0, …, <em>m</em> − 1]</span>, where <span class="math inline"><em>A</em>[<em>i</em>]</span> stores a linked list containing the keys in <span class="math inline"><em>S</em></span> with <span class="math inline"><em>h</em>(<em>x</em>) = <em>i</em></span>.</p>
+<p>Operations:</p>
+<ul>
+<li><p><span class="smallcaps">Lookup</span>(x): Compute <span class="math inline"><em>h</em>(<em>x</em>)</span>, scan through list for <span class="math inline"><em>h</em>(<em>x</em>)</span>, and return true if <span class="math inline"><em>x</em></span> is in the list and false otherwise.</p></li>
+<li><p><span class="smallcaps">Insert</span>(x): Compute <span class="math inline"><em>h</em>(<em>x</em>)</span>, scan through list of <span class="math inline"><em>h</em>(<em>x</em>)</span>. If <span class="math inline"><em>x</em></span> is in the list, do nothing, otherwise add <span class="math inline"><em>x</em></span> to the front of the list.</p></li>
+<li><p><span class="smallcaps">Delete</span>(x): Compute <span class="math inline"><em>h</em>(<em>x</em>)</span>, scan through the list for <span class="math inline"><em>h</em>(<em>x</em>)</span>. If <span class="math inline"><em>x</em></span> is in the list then remove it else do nothing.</p></li>
+</ul>
+<p>The time complexity of this solution is <span class="math inline"><em>O</em>(1 + length of linked list for h(x))</span> (space is still linear, which is the best we can hope for).</p>
+<p>To prove the complexity, we use the following three assumptions.</p>
+<ol>
+<li><p>h is chosen uniformly at random among all functions from <span class="math inline"><em>U</em></span> to <span class="math inline">{0, …, <em>m</em> − 1}</span>.</p></li>
+<li><p>We can store h in <span class="math inline"><em>O</em>(<em>n</em>)</span> space</p></li>
+<li><p>We can evaluate h in <span class="math inline"><em>O</em>(1)</span> time</p></li>
+</ol>
+<p>Now we can compute the expected length of the linked list: <br /><span class="math display">$$\begin{aligned}
+            E(\text{length of linked list for } h(x)) &amp;= E(|\{y \in S \mid h(y) = h(x)\}|) \\
+            &amp;= E\left(\sum_{y \in S}
+                \begin{cases}
+                    1 \quad \text{if } h(y) = h(x) \\
+                    0 \quad \text{if } h(y) \not = h(x)
+                \end{cases}
+                \right) \\
+            &amp;= \sum_{y \in S} E\left(
+                \begin{cases}
+                    1 \quad \text{if } h(y) = h(x) \\
+                    0 \quad \text{if } h(y) \not = h(x)
+                \end{cases}
+                \right) \\
+            &amp;= \sum_{y \in S} Pr(h(x) = h(y)) \\
+            &amp;= 1 + \sum_{y \in S \setminus \{x\}} Pr(h(x) = h(y)) \\
+            &amp;= 1 + \sum_{y \in S \setminus \{x\}} \frac{1}{m} \\
+            &amp;= 1 + (n - 1) \frac{1}{m} = O(1)
+        \end{aligned}$$</span><br /></p>
+<p>Note that the only place we use that <span class="math inline"><em>h</em></span> has to be random is at the fifth line in the equations above. However, the requirement for the hash function <span class="math inline"><em>h</em></span> is much weaker than being a random function! We only require that <span class="math inline">$\forall (x, y), x \not = y, Pr(h(x) = h(y)) \leq \frac{1}{m}$</span>. Hence we can actually find usable functions!</p>
+<h2 id="universal-hashing">Universal Hashing</h2>
+<p>Universal hash functions are a family of hash function with a very low probability of collisions between elements in the universe.</p>
+
+<p>To create such a hash function, <em>positional number systems</em> can be used. The is for integers <span class="math inline"><em>x</em></span> and <span class="math inline"><em>p</em></span>, the <em>base-p representation</em> of <span class="math inline"><em>x</em></span> is <span class="math inline"><em>x</em></span> written in base <span class="math inline"><em>p</em></span>, <span class="math inline"><em>x</em><sub><em>p</em></sub></span>. Example: <span class="math inline">10<sub>10</sub> = 1010<sub>2</sub> = 1 ⋅ 2<sup>3</sup> + 0 ⋅ 2<sup>2</sup> + 1 ⋅ 2<sup>1</sup> + 0 ⋅ 2<sup>0</sup></span>.</p>
+<p>The hash function can now be defined as the following:</p>
+
+<p>The family of universal functions can then be defined as <br /><span class="math display"><em>H</em> = {<em>h</em><sub><em>a</em></sub> ∣ <em>a</em> = (<em>a</em><sub>1</sub><em>a</em><sub>2</sub>…<em>a</em><sub><em>r</em></sub>)<sub><em>p</em></sub> ∈ {0, …, <em>p</em> − 1}<sup><em>r</em></sup>}</span><br /> To choose a random <span class="math inline"><em>h</em></span> simply means to choose a random <span class="math inline"><em>a</em></span>.</p>
+<p>These function should respect <span class="math inline"><em>O</em>(1)</span> space and time evaluation for any <span class="math inline"><em>h</em> ∈ <em>H</em></span>. To show this, a few things are needed.</p>
+
+<p>Now the goal is to show, that for a random <span class="math inline"><em>a</em> = (<em>a</em><sub>1</sub><em>a</em><sub>2</sub>…<em>a</em><sub><em>r</em></sub>)<sub><em>p</em></sub></span>, if <span class="math inline">$x = (x_1 x_2 \ldots x_r)_p \not = y = (y_1 y_2 \ldots y_r)_p$</span> then <span class="math inline">$Pr(h_a(x) = h_a(y)) \leq \frac{1}{m}$</span>. <br /><span class="math display">$$\begin{aligned}
+            Pr(h_a((x_1 &amp;\ldots x_r)_p = h_a((y_1 \ldots y_r)_p)) \\
+            &amp;= Pr(a_1 x_1 + \ldots + a_r x_r \equiv a_1 y_1 + \ldots + a_r y_r \mod p) \\
+            &amp;= Pr(a_r x_r - a_r y_r \equiv a_1 y_1 - a_1 x_1 + \ldots + a_{r-1} y_{r - 1} - a_{r-1} x_{r-1} \mod p) \\
+            &amp;= Pr(a_r (x_r - y_r) \equiv a_1 (y_1 - x_1) + \ldots + a_{r-1} (y_{r-1} - x_{r-1}) \mod p) \\
+            &amp;= Pr(a_r (x_r - y_r)(x_r - y_r)^{-1} \equiv \\
+            &amp; \quad \quad \quad (a_1(y_1 - x_1) + \ldots + a_{r-1}(y_{r-1} - x_{r-1}))(x_r - y_r)^{-1} \mod p) \\
+            &amp;= Pr(a_r \equiv (a_1 (y_1 - x_1) + \ldots + a_{r-1}(y_{r-1} - x_{r-1}))(x_r - y_r)^{-1} \mod p) \\
+            &amp;= \frac{1}{p} \leq \frac{1}{m}
+        \end{aligned}$$</span><br /></p>
+<p>The last rewrite is possible, because it has simplified down to whether <span class="math inline"><em>a</em><sub><em>r</em></sub></span> collide with some number in the range. As there is <span class="math inline"><em>p</em><sup><em>r</em></sup></span> choices for <span class="math inline"><em>a</em></span>, exactly <span class="math inline"><em>p</em><sup><em>p</em> − 1</sup></span> causes a collision, which gives the probability of <span class="math inline">$\frac{p^{r-1}}{p^r} = \frac{1}{p}$</span>.</p>
+
+<h3 id="other-universal-families">Other universal families</h3>
+<p>There also exists other types of universal families. For example:</p>
+
+<p>Hash function from <span class="math inline"><em>k</em></span>-bit numbers to <span class="math inline"><em>i</em></span>-bit numbers. <span class="math inline"><em>a</em></span> is an odd <span class="math inline"><em>k</em></span>-bit integer.</p>
+
+<h2 id="static-dictionaries-and-perfect-hashing">Static Dictionaries and Perfect Hashing</h2>
+
+<p>The static problem does not support any update operations (<span class="smallcaps">Insert</span> or <span class="smallcaps">Delete</span>), and thus need the set to be given in advance.</p>
+<p>Using a dynamic solution, chained hashing can be used, making <span class="math inline"><em>n</em></span> insertions when creating the set, which will then take <span class="math inline"><em>O</em>(<em>n</em>)</span> space and <span class="math inline"><em>O</em>(1)</span> expected time per lookup.</p>
+<h3 id="perfect-hashing">Perfect Hashing</h3>
+<p>A <em>perfect hash function</em> for <span class="math inline"><em>S</em></span> is a <em>collision free</em> hash function on <span class="math inline"><em>S</em></span>. This means that the lookup time will be <span class="math inline"><em>O</em>(1)</span> in <em>worst-case</em>.</p>
+<p>To find such a solution, we look at two different solutions that solves different parts of the problem, and which can afterwards be combined to solve the full problem.</p>
+<h4 id="solution-1">Solution 1</h4>
+<p>Collision-free but with too much space usage. Instead of mapping into an array of size <span class="math inline"><em>n</em></span>, instead use a universal hash function mapping to an array of size <span class="math inline"><em>n</em><sup>2</sup></span>. Now the expected number of total collisions in the array will be: <br /><span class="math display">$$\begin{aligned}
+                    E(\#collisions)
+                    &amp;= E\left( \sum_{x,y \in S, x \not = y}
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &amp;= \sum_{x,y \in S, x \not = y} E\left(
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &amp;= \sum_{x, y \in S, x \not = y} Pr(h(x) = h(y)) = \binom{n}{2} \frac{1}{n^2} \leq \frac{n^2}{2} \cdot \frac{1}{n^2} = \frac{1}{2}
+                \end{aligned}$$</span><br /></p>
+<p>where <span class="math inline">$\binom{n}{2}$</span> is the number of distinct pairs, and the <span class="math inline">$\frac{1}{n^2}$</span> is the chance of one element colliding with another, and since we are mapping into an array of size <span class="math inline"><em>n</em><sup>2</sup></span>, only if they map to the same index will they collide.</p>
+<p>This means that with probability <span class="math inline">1/2</span> we get a perfect hash function, which means that if it is not perfect, we can just try again and create a new one. The expected number of trials before we get a perfect hash function is <span class="math inline"><em>O</em>(1)</span>. With this, we can support <span class="math inline"><em>O</em>(1)</span> worst-case time lookup using <span class="math inline"><em>O</em>(<em>n</em><sup>2</sup>)</span> space.</p>
+<h4 id="solution-2">Solution 2</h4>
+<p>Many collisions but using linear space. If we use the same solution as before, but map into an array of size <span class="math inline"><em>n</em></span> instead, then the expected number of collisions will be: <br /><span class="math display">$$\begin{aligned}
+                    E(\#collisions)
+                    &amp;= E\left( \sum_{x,y \in S, x \not = y}
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &amp;= \sum_{x,y \in S, x \not = y} E \left(
+                        \begin{cases}
+                            1 \quad \text{if } h(y) = h(x) \\
+                            0 \quad \text{if } h(y) \not = h(x)
+                        \end{cases}
+                        \right) \\
+                    &amp;= \sum_{x,y \in S, x \not = y} Pr(h(x) = h(y)) = \binom{n}{2} \frac{1}{n} \leq \frac{n^2}{2} \cdot \frac{1}{n} = \frac{n}{2}
+                \end{aligned}$$</span><br /></p>
+<p>With this solution, we can see that we get a linear number of collisions, and hence not constant time lookup in worst-case.</p>
+<h4 id="solution-3---the-fks-scheme">Solution 3 - The FKS scheme</h4>
+<p>Combine the two previous solution to make a two-level solution. At level 1, use the solution with lots of collisions and linear space. Resolve each collisions at level 1 with collision-free solution at level 2. Hence we create a table <span class="math inline"><em>S</em></span> of size <span class="math inline"><em>n</em></span> which each contains a chained hashing table <span class="math inline"><em>S</em><sub><em>i</em></sub></span>, which size is the number of collisions at index <span class="math inline"><em>i</em></span> at the first level squared.</p>
+<p><span class="smallcaps">Lookup</span> will now work by doing a lookup in level 1 to find the correct level 2 dictionary, then lookup in the level 2 to find the element. Doing two constant time operations will still take constant time, hence the overall lookup operation still takes constant time.</p>
+<p>Level 1 will then use <span class="math inline"><em>O</em>(<em>n</em>)</span> space, while level 2 will use quadratic space in the number of elements that collide on the first level. We can compute the total size needed for this data structure: <br /><span class="math display">$$\begin{aligned}
+                    space
+                    &amp;= O\left( n + \sum_i |S_i|^2 \right) \\
+                    &amp;= O\left( n + \sum_i \left( |S_i| + 2 \binom{|S_i|}{2}\right)\right) \\
+                    &amp;= O\left( n + \sum_i |S_i| + 2 \sum \binom{|S_i|}{2}\right) \\
+                    &amp;= O\left( n + n + 2n \right) = O(n)
+                \end{aligned}$$</span><br /></p>
+<p>This method can do worst-case constant time lookups in static dictionaries, using <span class="math inline"><em>O</em>(<em>n</em>)</span> space and expected preprocessing time. This is also known as the <em>FKS scheme</em>.</p>
+
+    </section>
+</article>
+
+        </main>
+    </body>
+</html>
