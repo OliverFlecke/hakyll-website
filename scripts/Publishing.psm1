@@ -3,14 +3,6 @@ function Publish(
     [Parameter(Mandatory=$true)]
     [String]$Message
 ) {
-    git checkout develop
-    git stash
-
-    # Clean and build the site
-    bash stack build
-    bash stack exec site clean
-    bash stack exec site build
-
     git checkout master
 
     # Copy everything to the root
