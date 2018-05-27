@@ -22,7 +22,8 @@
         </header>
 
         <main role="main" class="main">
-            <article>
+            <link rel="stylesheet" href="../../css/numbering.css" />
+<article>
     <section class="header">
         
             Posted on May 21, 2018
@@ -109,7 +110,7 @@
 <h3 id="perfect-hashing">Perfect Hashing</h3>
 <p>A <em>perfect hash function</em> for <span class="math inline"><em>S</em></span> is a <em>collision free</em> hash function on <span class="math inline"><em>S</em></span>. This means that the lookup time will be <span class="math inline"><em>O</em>(1)</span> in <em>worst-case</em>.</p>
 <p>To find such a solution, we look at two different solutions that solves different parts of the problem, and which can afterwards be combined to solve the full problem.</p>
-<h5 id="solution-1">Solution 1</h5>
+<h4 id="solution-1">Solution 1</h4>
 <p>Collision-free but with too much space usage. Instead of mapping into an array of size <span class="math inline"><em>n</em></span>, instead use a universal hash function mapping to an array of size <span class="math inline"><em>n</em><sup>2</sup></span>. Now the expected number of total collisions in the array will be: <br /><span class="math display">$$\begin{aligned}
                     E(\#collisions)
                     &amp;= E\left( \sum_{x,y \in S, x \not = y}
@@ -128,7 +129,7 @@
                 \end{aligned}$$</span><br /></p>
 <p>where <span class="math inline">$\binom{n}{2}$</span> is the number of distinct pairs, and the <span class="math inline">$\frac{1}{n^2}$</span> is the chance of one element colliding with another, and since we are mapping into an array of size <span class="math inline"><em>n</em><sup>2</sup></span>, only if they map to the same index will they collide.</p>
 <p>This means that with probability <span class="math inline">1/2</span> we get a perfect hash function, which means that if it is not perfect, we can just try again and create a new one. The expected number of trials before we get a perfect hash function is <span class="math inline"><em>O</em>(1)</span>. With this, we can support <span class="math inline"><em>O</em>(1)</span> worst-case time lookup using <span class="math inline"><em>O</em>(<em>n</em><sup>2</sup>)</span> space.</p>
-<h5 id="solution-2">Solution 2</h5>
+<h4 id="solution-2">Solution 2</h4>
 <p>Many collisions but using linear space. If we use the same solution as before, but map into an array of size <span class="math inline"><em>n</em></span> instead, then the expected number of collisions will be: <br /><span class="math display">$$\begin{aligned}
                     E(\#collisions)
                     &amp;= E\left( \sum_{x,y \in S, x \not = y}
@@ -146,7 +147,7 @@
                     &amp;= \sum_{x,y \in S, x \not = y} Pr(h(x) = h(y)) = \binom{n}{2} \frac{1}{n} \leq \frac{n^2}{2} \cdot \frac{1}{n} = \frac{n}{2}
                 \end{aligned}$$</span><br /></p>
 <p>With this solution, we can see that we get a linear number of collisions, and hence not constant time lookup in worst-case.</p>
-<h5 id="solution-3---the-fks-scheme">Solution 3 - The FKS scheme</h5>
+<h4 id="solution-3---the-fks-scheme">Solution 3 - The FKS scheme</h4>
 <p>Combine the two previous solution to make a two-level solution. At level 1, use the solution with lots of collisions and linear space. Resolve each collisions at level 1 with collision-free solution at level 2. Hence we create a table <span class="math inline"><em>S</em></span> of size <span class="math inline"><em>n</em></span> which each contains a chained hashing table <span class="math inline"><em>S</em><sub><em>i</em></sub></span>, which size is the number of collisions at index <span class="math inline"><em>i</em></span> at the first level squared.</p>
 <p><span class="smallcaps">Lookup</span> will now work by doing a lookup in level 1 to find the correct level 2 dictionary, then lookup in the level 2 to find the element. Doing two constant time operations will still take constant time, hence the overall lookup operation still takes constant time.</p>
 <p>Level 1 will then use <span class="math inline"><em>O</em>(<em>n</em>)</span> space, while level 2 will use quadratic space in the number of elements that collide on the first level. We can compute the total size needed for this data structure: <br /><span class="math display">$$\begin{aligned}
