@@ -36,7 +36,7 @@
         <h1 id="searching-strategies">Searching Strategies</h1>
 <p>Searching for elements in a data structure is one of the fundamental problems for every computer scientist and programmer will encounter many times. Given an array <span class="math inline"><em>A</em></span> of integers, consider the problem of determine if a certain number <span class="math inline"><em>x</em></span> apprears in the array or not. Below is an illustration, where the first line is the indexes into the array and the second line is the value at the given index. Consider how to determine if <span class="math inline">41</span> is the array or not.</p>
 
-<p><img src="../../images/integer_array.png" alt="image" /></p>
+<p><img src="../../images/animations/linear_search/integer_array.gif" alt="image" /></p>
 <p>A naive approach to this problem is to do a <em>linear search</em>. That is to go through each of the elements one by one, comparing each of the elements if they are equal to <span class="math inline"><em>x</em></span>. Pseudocode for this simple algorithm can be seen here:</p>
 
 <p><img src="../../images/algorithms/linear_search.png" alt="image" /></p>
@@ -47,6 +47,8 @@
 <p>When looking for <span class="math inline">20</span> in the sorted array, it is clear that the element cannot be at any index after <span class="math inline">22</span>, hence we can terminate the algorithm early. However, asymptotically, this will not give a better running time, as the element you are looking for could be larger than any element in the array, causing each element to be analyzed.</p>
 <h2 id="a-better-approach---binary-search">A better approach - Binary Search</h2>
 <p>Reusing the idea of sorting the array, a better algorithm can be devised using <em>binary search</em> or <em>logarithmic search</em>. Instead of starting from one end of the array, start at the middle of the sorted array and check if the element is equal, smaller, or larger than that element. If it is equal, the algorithm can simple return true, while if the element is smaller, the algorithm can be called recursively on the right part of the array. Similarly, if the element is larger, then the algorithm can run recursively on the left part of the array. This will cut the problem in half in each step!</p>
+
+<p><img src="../../images/animations/binary_search/integer_array_sorted.gif" alt="image" /></p>
 <p>The pseudocode for this algorithm is illustrated here:</p>
 
 <p><img src="../../images/algorithms/binary_search.png" alt="image" /></p>
