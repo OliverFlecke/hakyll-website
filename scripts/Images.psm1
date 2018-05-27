@@ -33,20 +33,27 @@ function Create-Image (
     $FullName = (Convert-Path -Path $Name).Replace($From, "")
     $BaseName = [io.path]::GetFileNameWithoutExtension($Name)
     $Path = (Split-Path $FullName).Substring(1) -replace "\\","/"
+    $RelativeName = "$($Path)/$($BaseName)"
 
-    if ((Test-Path "$($Path)\\$($BaseName).png") -And (-not $RefreshImage)) {
-        Write-Host "Image $($BaseName).png already exists, skipping"
-        return
-    }
-    else {
-        Write-Host "Creating image"
+    $ImageName = "$($Path)\\$($BaseName).png"
+    if ((Test-Path -Path $ImageName) -And (-not $RefreshImage)) {
+        $Image = Get-Item -Path $ImageName
+        $TexFile = Get-Item "$($RelativeName).tex"
+
+        if ([datetime]$Image.LastWriteTime -lt [datetime]$TexFile.LastWriteTime) {
+            Write-Host "Tex file is newer than image. Refreshing image"
+        }
+        else {
+            Write-Host "Image $($BaseName).png already exists, skipping"
+            return
+        }
     }
 
+    Write-Host "Creating image"
     if ($Path -eq "") {
         $Path = "."
     }
 
-    $RelativeName = "$($Path)/$($BaseName)"
     if ($OutputLaTeX) {
         & pdflatex -halt-on-error -output-directory="$($Path)" "$($RelativeName).tex"
     }
