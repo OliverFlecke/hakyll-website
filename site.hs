@@ -10,6 +10,7 @@ main :: IO ()
 main = hakyll $ do
     copyFiles ("images/**.png" .&&. complement "images/animations/**.png")
     copyFiles "images/**.gif"
+    copyFiles "scripts/*.js"
 
     match "css/*" $ do
         route   idRoute
