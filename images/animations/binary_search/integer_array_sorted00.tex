@@ -3,7 +3,10 @@
 \begin{document}
 
 \newcounter{counter}
-\begin{tabularx}{\textwidth}{*{15}{X}}
+\newcounter{x}
+\setcounter{x}{0}
+\begin{tabularx}{\textwidth}{*{15}{C}}
+    & \\
     \forloop{counter}{0}{\value{counter} < 14}{\centering\number\value{counter} &}14
     \\ \hline
     \ccol{1} &
@@ -21,8 +24,9 @@
     \ccol{62} &
     \ccol{67} &
     \ccol{74}
-    \\
-    \hline
+    \\ \hline
+    \forloop{counter}{1}{\value{counter} < \value{x}}{&}
+    &
 \end{tabularx}
 
 \end{document}

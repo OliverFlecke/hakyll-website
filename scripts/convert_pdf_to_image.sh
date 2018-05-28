@@ -1,1 +1,1 @@
-convert -density 300 -quality 90 -negate "$1" "${1%.*}".png
+convert -density 300 -quality 100 -negate "$1" "${1%.*}""$2".png

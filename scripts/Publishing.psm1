@@ -3,15 +3,14 @@ function Publish(
     [Parameter(Mandatory=$true)]
     [String]$Message
 ) {
-    git checkout develop
-    git stash
-
-    # Clean and build the site
-    bash stack build
-    bash stack exec site clean
-    bash stack exec site build
-
     git checkout master
+
+    $Branch = git rev-parse --abbrev-ref HEAD
+    if (-not ($Branch -eq "master")) {
+        Write-Warning "Unable to checkout master branch."
+        Write-Warning "Check that all files are committed and try again."
+        return
+    }
 
     # Copy everything to the root
     Copy-Item -Path _site/* -Destination . -Recurse -Force

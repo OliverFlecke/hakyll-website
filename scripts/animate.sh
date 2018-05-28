@@ -1,0 +1,1 @@
+convert -delay $2 -dispose previous "${1%.*}"*.png -loop 0 $3 "${1%.*}".gif

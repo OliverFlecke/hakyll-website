@@ -143,7 +143,7 @@ author: Oliver Fleckenstein
 
             To find such a solution, we look at two different solutions that solves different parts of the problem, and which can afterwards be combined to solve the full problem.
 
-            \paragraph{Solution 1}
+            \subsubsection{Solution 1}
 
                 Collision-free but with too much space usage.
                 Instead of mapping into an array of size $n$, instead use a universal hash function mapping to an array of size $n^2$.
@@ -171,7 +171,7 @@ author: Oliver Fleckenstein
                 The expected number of trials before we get a perfect hash function is $O(1)$.
                 With this, we can support $O(1)$ worst-case time lookup using $O(n^2)$ space.
 
-            \paragraph{Solution 2}
+            \subsubsection{Solution 2}
 
                 Many collisions but using linear space.
                 If we use the same solution as before, but map into an array of size $n$ instead, then the expected number of collisions will be:
@@ -194,7 +194,7 @@ author: Oliver Fleckenstein
 
                 With this solution, we can see that we get a linear number of collisions, and hence not constant time lookup in worst-case.
 
-            \paragraph{Solution 3 - The FKS scheme}
+            \subsubsection{Solution 3 - The FKS scheme}
 
                 Combine the two previous solution to make a two-level solution.
                 At level 1, use the solution with lots of collisions and linear space.
