@@ -7,14 +7,20 @@ function Clean-Images () {
 
 function Generate-Images (
     [String]$Path="./images",
-    [Switch]$RefreshImages
+    [Switch]$RefreshImages,
+    [Switch]$GenerateAnimationImages
 ) {
     $From = $PWD.Path
-    Get-ChildItem -Path $Path -Filter *.tex -Recurse |
-    ForEach-Object {
-        $RelativeName = ($_.FullName.Replace($From, "") -replace "\\","/").Substring(1)
+
+    if ($GenerateAnimationImages) {
+        $items = Get-ChildItem -Path $Path -Filter *.tex -Recurse
+    } else {
+        $items = Get-ChildItem -Path $Path -Filter *.tex -Recurse | ? { $_.FullName -notmatch 'animations' }
+    }
+    foreach ($item in $items) {
+        $RelativeName = ($item.FullName.Replace($From, "") -replace "\\","/").Substring(1)
         Write-Host "Converting $($RelativeName)"
-        & Create-Image -Name $_.FullName -RefreshImage:$RefreshImages
+        & Create-Image -Name $item.FullName -RefreshImage:$RefreshImages
         Write-Host ""
     }
     Remove-Item *.log

@@ -31,7 +31,7 @@ The formal definition for the Big-O notation is:
 </header>
 <section>
 
-$f(x) \in O(g(x))$ such that there exists $c > 0$ and $x_0$ such that $f(x) > c g(x)$ for $x \geq x_0$.
+$f(x) \in O(g(x))$ such that there exists $c > 0$ and $x_0$ such that $f(x) < c g(x)$ for $x \geq x_0$.
 </section>
 </div>
 
@@ -119,10 +119,33 @@ The classic example of this is [binary search](/posts/binary search/).
 
 ### Exponential time $O(2^n)$
 
-### Extra: Little-o
+The last common order of functions mentioned here is exponential time algorithms, denoted $O(2^n)$.
+An example of this is the algorithm for generation Fibonacci numbers, which in each step calls itself twice, which causes the problem to grow exponentially with $n$.
+
+```Typescript
+function fibonacci(n: number): number {
+    if (n <= 0) return 0;
+    if (n <= 2) return 1;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+```
+
+### Tight bound
 
 Note that from the definition of the Big-O notation the bound of the complexity does not have to be *tight*.
 For example, for the insertSort algorithm the time complexity can also be bounded by $O(n^3)$, because $O(n^3) > O(n^2)$ for every possible $n$.
+
+### Extra: Little-o
+
+<div class="definition">
+<header>
+###### Little-O
+</header>
+<section>
+
+$f(x) \in O(g(x))$ such that there exists an $\varepsilon$ such that $f(x) < \varepsilon g(x)$ for all possible values of $x$.
+</section>
+</div>
 
 ## Big-$\Theta$
 
