@@ -60,7 +60,7 @@ function Create-Image (
     else {
         & pdflatex -halt-on-error -output-directory="$($Path)" "$($RelativeName).tex" | Out-Null
     }
-    bash ./scripts/convert_pdf_to_image.sh "$($RelativeName).pdf" $Number
+    bash ./build/convert_pdf_to_image.sh "$($RelativeName).pdf" $Number
     Remove-Item "$($RelativeName).*" -Exclude *.tex,*.png,*.gif -Force
 }
 

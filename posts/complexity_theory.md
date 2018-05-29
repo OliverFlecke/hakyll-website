@@ -42,7 +42,7 @@ This is illustrated below, where the function $f(x)$ is bounded by some linear f
 </div>
 
 But this is quite abstract.
-Lets look at a few examples of the most common functions used.
+Lets look at a few examples of the most common situations and analyze the runtime complexity of some algorithms.
 
 ### Constant time $O(1)$
 
@@ -83,7 +83,8 @@ However, as the Big-O notation is used to analyze the worst-case, the case were 
 ### Polynomial time $O(n^k)$
 
 Many programs also use nested iterations over the data set, which causes the program's performance to be directly proportional to some polynomial.
-For example, a naive function to sort a data set would be
+For example, a naive algorithm for sorting a list is *insert sort*, which goes through each of the elements in the list and compares it to all earlier elements in the list.
+The code for this can be seen below.
 
 ```Typescript
 function insertSort(list: any[]): any[] {
@@ -102,13 +103,26 @@ function insertSort(list: any[]): any[] {
 }
 ```
 
+When analyzing this, it is clear that the outermost loop is executed exactly $n$ times.
+The inner loop is not executed for the first iteration of the outerloop, once for the second iteration and so on, until it is executed $O(n)$ times in for the last iteration.
+Overall this means the algorithm can be executed in $n \cdot O(n) = O(n^2)$ steps.
+
+In general this analyze works for any number of nested loops.
+For instant, for $k$ nested loops, the runtime complexity of the algorithm will be $O(n^k)$ (assuming the innermost loop takes constant time to execute).
+It can also be seen that the constant time and linear time examples above are special cases of this with $k=0$ and $k=1$ respectively.
 
 ### Logarithmic time $O(\lg n)$
 
+Logarithmic complexity also occur quite often in algorithms.
+The types of algorithms that runs in logarithmic time is in general algorithms which is able to cut the problem in half in each step.
+The classic example of this is [binary search](/posts/binary search/).
 
 ### Exponential time $O(2^n)$
 
 ### Extra: Little-o
+
+Note that from the definition of the Big-O notation the bound of the complexity does not have to be *tight*.
+For example, for the insertSort algorithm the time complexity can also be bounded by $O(n^3)$, because $O(n^3) > O(n^2)$ for every possible $n$.
 
 ## Big-$\Theta$
 

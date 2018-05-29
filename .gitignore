@@ -3,7 +3,6 @@ _cache/
 _site/
 
 images/**/*.png
-images/**/*.gif
 
 programs/node_modules/
 programs/dist/
