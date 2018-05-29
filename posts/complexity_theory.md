@@ -1,5 +1,5 @@
 ---
-title: Complexity Theory Markdown
+title: Complexity Theory
 date: 2018-05-27
 author: Oliver Fleckenstein
 ---
@@ -44,19 +44,19 @@ This is illustrated below, where the function $f(x)$ is bounded by some linear f
 But this is quite abstract.
 Lets look at a few examples of the most common functions used.
 
-### Constant time
+### Constant time $O(1)$
 
 The simplest form of algorithms used are those that can be executed in the same space or time independent of the problems size.
 This is the basis of all computations that are done in algorithms.
 This is called *constant time* and is denoted $O(1)$.
 
 ```Typescript
-function isZero(x: number): boolean {
-    return number === 0;
+function isZero(value: number): boolean {
+    return value === 0;
 }
 ```
 
-### Linear time
+### Linear time $O(n)$
 
 For many problems, it is difficulty to solve without being depended on the size of the problem.
 The simplest example of program whose performance is directly and linearly dependend on the problem size is a loop.
@@ -68,25 +68,47 @@ This is denoted $O(n)$
 
 ```Typescript
 function contains(list: any[], x: any): boolean {
-    for (var value in list) {
-        if (value === x) {
-            return true
+    for (let i = 0; i < list.length; i++) {
+        if (list[i] === x) {
+            return true;
         }
     }
-    return false
+    return false;
 }
 ```
 
 Note that this algorithm can return early if the element is preset in the list.
 However, as the Big-O notation is used to analyze the worst-case, the case were the element is not in the list have to be considered, hence the algorithm will not return until all values in the list have been considered.
 
-### Logarithmic time
+### Polynomial time $O(n^k)$
 
-### Quadratic time
+Many programs also use nested iterations over the data set, which causes the program's performance to be directly proportional to some polynomial.
+For example, a naive function to sort a data set would be
 
-### Polynomial time
+```Typescript
+function insertSort(list: any[]): any[] {
+    let i = 0;
+    while (i < list.length) {
+        let j = i;
+        while (j > 0 && list[j-1] > list[j]) {
+            let temp = list[j];
+            list[j] = list[j-1];
+            list[j-1] = temp;
+            j--;
+        }
+        i++;
+    }
+    return list;
+}
+```
 
-### Little-o
+
+### Logarithmic time $O(\lg n)$
+
+
+### Exponential time $O(2^n)$
+
+### Extra: Little-o
 
 ## Big-$\Theta$
 
