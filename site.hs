@@ -3,7 +3,7 @@
 import Data.Monoid (mappend)
 import Hakyll
 
-import System.FilePath.Posix (takeBaseName, takeDirectory, (</>))
+import System.FilePath.Posix (takeBaseName, takeDirectory, (</>), replaceExtension)
 import Data.List (sortBy, isSuffixOf)
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -37,7 +37,7 @@ main = hakyll $ do
             >>= cleanIndexUrls
 
     match "index.html" $ do
-        route idRoute
+        route cleanRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx =
@@ -69,8 +69,13 @@ postCtx =
 cleanRoute :: Routes
 cleanRoute = customRoute createIndexRoute
     where
-        createIndexRoute ident = takeDirectory p </> takeBaseName p </> "index.html"
-            where p = toFilePath ident
+        createIndexRoute ident =
+            case baseName of
+                "index" -> ((`replaceExtension` "html") . toFilePath) ident
+                _       -> takeDirectory p </> takeBaseName p </> "index.html"
+            where
+                p = toFilePath ident
+                baseName = takeBaseName p
 
 cleanIndexUrls :: Item String -> Compiler (Item String)
 cleanIndexUrls = return . fmap (withUrls cleanIndex)
