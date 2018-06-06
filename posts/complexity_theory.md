@@ -1,6 +1,6 @@
 ---
-title: Complexity Theory
-date: 2018-05-27
+title: Complexity Theory and the Big-O Notation
+date: 2018-06-06
 author: Oliver Fleckenstein
 ---
 # Complexity Theory
@@ -38,7 +38,7 @@ $f(x) \in O(g(x))$ such that there exists $c > 0$ and $x_0$ such that $f(x) < c 
 This is illustrated below, where the function $f(x)$ is bounded by some linear function $g(x)$.
 
 <div style="max-width:500px" class="center">
-![Illustration of how Big-O bounds the complexity for any algorithm.](/images/complexity/Big-O.png)
+![Illustration of how Big-O bounds the complexity for an algorithm for any $n$ larger than some $x_0$.](/images/complexity/Big-O.png)
 </div>
 
 But this is quite abstract.
@@ -133,13 +133,15 @@ function fibonacci(n: number): number {
 ### Tight bound
 
 Note that from the definition of the Big-O notation the bound of the complexity does not have to be *tight*.
-For example, for the insertSort algorithm the time complexity can also be bounded by $O(n^3)$, because $O(n^3) > O(n^2)$ for every possible $n$.
+This means that for the `insertSort` algorithm the time complexity can also be bounded by $O(n^3)$, because $O(n^3) > O(n^2)$ for every possible $n$.
 
-### Extra: Little-o
+### Extra: little-o
+
+Another notation that as sometimes used is the *little-o* notation, which is defined as follows:
 
 <div class="definition">
 <header>
-###### Little-O
+###### little-o
 </header>
 <section>
 
@@ -147,12 +149,11 @@ $f(x) \in O(g(x))$ such that there exists an $\varepsilon$ such that $f(x) < \va
 </section>
 </div>
 
-## Big-$\Theta$
+This means that the function $g(x)$ have to be strictly larger than the complexity $f(x)$ for any possible value for $n$.
+This can be illustrated similarly to the big-O notation.
 
-### Little-$\theta$
+<div style="max-width:500px" class="center">
+![Illustration of how little-o bounds the complexity for any $n$.](/images/complexity/little-o.png)
+</div>
 
-## Big-$\Omega$
-
-### Little-$\omega$
-
-## Summary
+This notation is not used nearly as much as the Big-O notation, as one often don't care about the complexity for small values of $n$, and it can be difficult to prove the complexity for these values as well.
