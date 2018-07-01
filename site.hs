@@ -28,10 +28,10 @@ main = hakyll $ do
             >>= relativizeUrls
             >>= cleanIndexUrls
 
-    match "posts/*" $ do
+    match "posts/algorithms/*" $ do
         route $ cleanRoute
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
+            >>= loadAndApplyTemplate "templates/algorithm.html" postCtx
             >>= loadAndApplyTemplate "templates/main.html" postCtx
             >>= relativizeUrls
             >>= cleanIndexUrls
@@ -39,10 +39,10 @@ main = hakyll $ do
     match "index.html" $ do
         route cleanRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            post_algorithms <- recentFirst =<< loadAll "posts/algorithms/*"
             let indexCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Home"                `mappend`
+                    listField "posts" postCtx (return post_algorithms) `mappend`
+                    constField "title" "Home" `mappend`
                     defaultContext
 
             getResourceBody
