@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Complexity Theory and the Big-O Notation</title>
+        <link rel="stylesheet" href="../../../css/main.css" />
+        <link rel="stylesheet" href="../../../css/text_styling.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+        <link href="https://fonts.googleapis.com/css?family=EB+Garamond|Sorts+Mill+Goudy" rel="stylesheet">
+    </head>
+    <body>
+        <header class="page-header">
+            <div class="nav-container">
+                <h1 class="title">
+                    <a href="../../../">Oliver Fleckenstein</a>
+                </h1>
+                <nav>
+                    <a href="../../../about/">About</a>
+                </nav>
+            </div>
+        </header>
+
+        <main role="main" class="main">
+            <link rel="stylesheet" href="../../../css/numbering.css" />
+<article>
+    <section>
+        <h1 id="complexity-theory">Complexity Theory</h1>
+<!-- Time and space -->
+<p>When developing algorithms it is necessary to analyze how well it is performing, known as the <em>computational complexity</em> of the algorithm. The two most important metrics are the <em>running time</em> when executed and <em>space</em> consumption of the algorithm. Sometimes it is also interesting to analyze the <em>preproccessing time</em> used to build the data structure. These complexities are in general expressed using a function <span class="math inline"><em>n</em> → <em>f</em>(<em>n</em>)</span> where <span class="math inline"><em>n</em></span> is the size of the input to the algorithm. The function <span class="math inline"><em>f</em>(<em>n</em>)</span> is used to express either the worst-case or the average case complexity for a problem. To be precise, how difficult a problem of size <span class="math inline"><em>n</em></span> is to solve can vary a lot, hence <span class="math inline"><em>f</em>(<em>n</em>)</span> should express the complexity of the algorithm for any problem.</p>
+<!-- Asymptotic -->
+<p>It is often hard to predict the exact complexity of a problem, and in pratice it can also vary from machine to machine. It is also not so interesting to look at the complexities for small problems. Because of this, when analyzing algorithms, we are in general only consider the complexity for problems that are <em>asymptotic</em> large. These complexities can be expressed using the following notations.</p>
+<h2 id="big-o">Big-O</h2>
+<p>The <em>Big-O</em> notation is used to express the worst case complexity for an algorithm. This means that we can always find a function <span class="math inline"><em>g</em>(<em>x</em>)</span> that for every large <span class="math inline"><em>n</em></span> will be greater than or equal to <span class="math inline"><em>f</em>(<em>x</em>)</span>. The formal definition for the Big-O notation is:</p>
+<div class="definition">
+<header>
+<h6 id="big-o-1">Big-O</h6>
+</header>
+<section>
+<span class="math inline"><em>f</em>(<em>x</em>) ∈ <em>O</em>(<em>g</em>(<em>x</em>))</span> such that there exists <span class="math inline"><em>c</em> &gt; 0</span> and <span class="math inline"><em>x</em><sub>0</sub></span> such that <span class="math inline"><em>f</em>(<em>x</em>) &lt; <em>c</em><em>g</em>(<em>x</em>)</span> for <span class="math inline"><em>x</em> ≥ <em>x</em><sub>0</sub></span>.
+</section>
+</div>
+<p>This is illustrated below, where the function <span class="math inline"><em>f</em>(<em>x</em>)</span> is bounded by some linear function <span class="math inline"><em>g</em>(<em>x</em>)</span>.</p>
+<div class="center" style="max-width:500px">
+<figure>
+<img src="../../../images/complexity/Big-O.png" alt="Illustration of how Big-O bounds the complexity for an algorithm for any n larger than some x_0." /><figcaption>Illustration of how Big-O bounds the complexity for an algorithm for any <span class="math inline"><em>n</em></span> larger than some <span class="math inline"><em>x</em><sub>0</sub></span>.</figcaption>
+</figure>
+</div>
+<p>But this is quite abstract. Lets look at a few examples of the most common situations and analyze the runtime complexity of some algorithms.</p>
+<h3 id="constant-time-o1">Constant time <span class="math inline"><em>O</em>(1)</span></h3>
+<p>The simplest form of algorithms used are those that can be executed in the same space or time independent of the problems size. This is the basis of all computations that are done in algorithms. This is called <em>constant time</em> and is denoted <span class="math inline"><em>O</em>(1)</span>.</p>
+<pre class="typescript"><code>function isZero(value: number): boolean {
+    return value === 0;
+}</code></pre>
+<h3 id="linear-time-on">Linear time <span class="math inline"><em>O</em>(<em>n</em>)</span></h3>
+<p>For many problems, it is difficulty to solve without being depended on the size of the problem. The simplest example of program whose performance is directly and linearly dependend on the problem size is a loop. The membership problem can be solved by iterating through the list of elements, testing if each value is equal to the element.</p>
+<p>Each iteration of the list can be seen to take constant time, as only a comparison have to be done. As there is <span class="math inline"><em>n</em></span> elements in the list, this comparison have to be executed <span class="math inline"><em>n</em></span> times. This is denoted <span class="math inline"><em>O</em>(<em>n</em>)</span></p>
+<pre class="typescript"><code>function contains(list: any[], x: any): boolean {
+    for (let i = 0; i &lt; list.length; i++) {
+        if (list[i] === x) {
+            return true;
+        }
+    }
+    return false;
+}</code></pre>
+<p>Note that this algorithm can return early if the element is preset in the list. However, as the Big-O notation is used to analyze the worst-case, the case were the element is not in the list have to be considered, hence the algorithm will not return until all values in the list have been considered.</p>
+<h3 id="polynomial-time-onk">Polynomial time <span class="math inline"><em>O</em>(<em>n</em><sup><em>k</em></sup>)</span></h3>
+<p>Many programs also use nested iterations over the data set, which causes the program’s performance to be directly proportional to some polynomial. For example, a naive algorithm for sorting a list is <em>insert sort</em>, which goes through each of the elements in the list and compares it to all earlier elements in the list. The code for this can be seen below.</p>
+<pre class="typescript"><code>function insertSort(list: any[]): any[] {
+    let i = 0;
+    while (i &lt; list.length) {
+        let j = i;
+        while (j &gt; 0 &amp;&amp; list[j-1] &gt; list[j]) {
+            let temp = list[j];
+            list[j] = list[j-1];
+            list[j-1] = temp;
+            j--;
+        }
+        i++;
+    }
+    return list;
+}</code></pre>
+<p>When analyzing this, it is clear that the outermost loop is executed exactly <span class="math inline"><em>n</em></span> times. The inner loop is not executed for the first iteration of the outerloop, once for the second iteration and so on, until it is executed <span class="math inline"><em>O</em>(<em>n</em>)</span> times in for the last iteration. Overall this means the algorithm can be executed in <span class="math inline"><em>n</em> ⋅ <em>O</em>(<em>n</em>) = <em>O</em>(<em>n</em><sup>2</sup>)</span> steps.</p>
+<p>In general this analyze works for any number of nested loops. For instant, for <span class="math inline"><em>k</em></span> nested loops, the runtime complexity of the algorithm will be <span class="math inline"><em>O</em>(<em>n</em><sup><em>k</em></sup>)</span> (assuming the innermost loop takes constant time to execute). It can also be seen that the constant time and linear time examples above are special cases of this with <span class="math inline"><em>k</em> = 0</span> and <span class="math inline"><em>k</em> = 1</span> respectively.</p>
+<h3 id="logarithmic-time-olg-n">Logarithmic time <span class="math inline"><em>O</em>(lg <em>n</em>)</span></h3>
+<p>Logarithmic complexity also occur quite often in algorithms. The types of algorithms that runs in logarithmic time is in general algorithms which is able to cut the problem in half in each step. The classic example of this is <a href="../../../posts/binary%20search/">binary search</a>.</p>
+<h3 id="exponential-time-o2n">Exponential time <span class="math inline"><em>O</em>(2<sup><em>n</em></sup>)</span></h3>
+<p>The last common order of functions mentioned here is exponential time algorithms, denoted <span class="math inline"><em>O</em>(2<sup><em>n</em></sup>)</span>. An example of this is the algorithm for generation Fibonacci numbers, which in each step calls itself twice, which causes the problem to grow exponentially with <span class="math inline"><em>n</em></span>.</p>
+<pre class="typescript"><code>function fibonacci(n: number): number {
+    if (n &lt;= 0) return 0;
+    if (n &lt;= 2) return 1;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}</code></pre>
+<h3 id="tight-bound">Tight bound</h3>
+<p>Note that from the definition of the Big-O notation the bound of the complexity does not have to be <em>tight</em>. This means that for the <code>insertSort</code> algorithm the time complexity can also be bounded by <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span>, because <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>) &gt; <em>O</em>(<em>n</em><sup>2</sup>)</span> for every possible <span class="math inline"><em>n</em></span>.</p>
+<h3 id="extra-little-o">Extra: little-o</h3>
+<p>Another notation that as sometimes used is the <em>little-o</em> notation, which is defined as follows:</p>
+<div class="definition">
+<header>
+<h6 id="little-o">little-o</h6>
+</header>
+<section>
+<span class="math inline"><em>f</em>(<em>x</em>) ∈ <em>O</em>(<em>g</em>(<em>x</em>))</span> such that there exists an <span class="math inline"><em>ε</em></span> such that <span class="math inline"><em>f</em>(<em>x</em>) &lt; <em>ε</em><em>g</em>(<em>x</em>)</span> for all possible values of <span class="math inline"><em>x</em></span>.
+</section>
+</div>
+<p>This means that the function <span class="math inline"><em>g</em>(<em>x</em>)</span> have to be strictly larger than the complexity <span class="math inline"><em>f</em>(<em>x</em>)</span> for any possible value for <span class="math inline"><em>n</em></span>. This can be illustrated similarly to the big-O notation.</p>
+<div class="center" style="max-width:500px">
+<figure>
+<img src="../../../images/complexity/little-o.png" alt="Illustration of how little-o bounds the complexity for any n." /><figcaption>Illustration of how little-o bounds the complexity for any <span class="math inline"><em>n</em></span>.</figcaption>
+</figure>
+</div>
+<p>This notation is not used nearly as much as the Big-O notation, as one often don’t care about the complexity for small values of <span class="math inline"><em>n</em></span>, and it can be difficult to prove the complexity for these values as well.</p>
+    </section>
+</article>
+
+        </main>
+    </body>
+</html>
