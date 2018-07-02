@@ -1,3 +1,6 @@
-[submodule "Algorithms"]
-	path = Algorithms
-	url = https://github.com/OliverFlecke/Algorithms
+[submodule "Algorithms-TypeScript"]
+	path = Algorithms-TypeScript
+	url = https://github.com/OliverFlecke/Algorithms-TypeScript
+[submodule "Algorithms-Haskell"]
+	path = Algorithms-Haskell
+	url = https://github.com/OliverFlecke/Algorithms-Haskell
