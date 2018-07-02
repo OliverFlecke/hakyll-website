@@ -28,7 +28,7 @@ main = hakyll $ do
             >>= relativizeUrls
             >>= cleanIndexUrls
 
-    match "posts/algorithms/*" $ do
+    match "algorithms/*" $ do
         route $ cleanRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/algorithm.html" postCtx
@@ -39,9 +39,9 @@ main = hakyll $ do
     match "index.html" $ do
         route cleanRoute
         compile $ do
-            post_algorithms <- recentFirst =<< loadAll "posts/algorithms/*"
+            algorithms <- recentFirst =<< loadAll "algorithms/*"
             let indexCtx =
-                    listField "posts" postCtx (return post_algorithms) `mappend`
+                    listField "algorithms" postCtx (return algorithms) `mappend`
                     constField "title" "Home" `mappend`
                     defaultContext
 
