@@ -85,6 +85,19 @@ article .header {
     text-decoration: none;
 }
 
+/* Code */
+code {
+    white-space: pre-wrap;
+    font-family: 'Fira Code', 'Fira Mono', monospace;
+    font-size: 1.2rem;
+}
+
+.typescript {
+    background-color: #333333;
+    border-radius: 5px;
+    padding: 10px;
+}
+
 
 @media (max-width: 320px) {
     .nav-container {

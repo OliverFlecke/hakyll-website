@@ -36,18 +36,28 @@ main = hakyll $ do
             >>= relativizeUrls
             >>= cleanIndexUrls
 
+    match "publications/*" $ do
+        route $ cleanRoute
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/publication.html" postCtx
+            >>= relativizeUrls
+            >>= cleanIndexUrls
+
     match "index.html" $ do
         route cleanRoute
         compile $ do
             algorithms <- recentFirst =<< loadAll "algorithms/*"
-            let indexCtx =
+            publications <- recentFirst =<< loadAll "publications/*"
+
+            let index =
                     listField "algorithms" postCtx (return algorithms) `mappend`
+                    listField "publications" postCtx (return publications) `mappend`
                     constField "title" "Home" `mappend`
                     defaultContext
 
             getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/main.html" indexCtx
+                >>= applyAsTemplate index
+                >>= loadAndApplyTemplate "templates/main.html" index
                 >>= relativizeUrls
                 >>= cleanIndexUrls
 
