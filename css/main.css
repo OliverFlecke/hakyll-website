@@ -92,7 +92,7 @@ code {
     font-size: 1.2rem;
 }
 
-.typescript {
+pre {
     background-color: #333333;
     border-radius: 5px;
     padding: 10px;
